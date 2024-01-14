@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "tauri": "tauri",
-    "build": "tauri build"
+    "build": "tauri build",
+    "dev": "vite"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.5.8"
+    "@tauri-apps/cli": "^1.5.8",
+    "vite": "^5.0.11"
   }
 }

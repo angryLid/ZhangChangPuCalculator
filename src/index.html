@@ -47,12 +47,11 @@
 
         <button @dblclick="cards.length = 0">清除所有卡片(双击防栓)</button>
         <label for="show">
-            
+
             <input id="show" type="checkbox" x-model="showPanel">
             <span>展示输入面板</span>
         </label>
-        
-        
+
         <div x-transition x-show="showPanel" class="panel">
             <template x-for="card in Array(13).fill(0).map((_, idx) => idx + 1)">
                 <div @click="cards.push(card)" class="card card-in-panel button" x-text="cardUi(card)"></div>
@@ -76,7 +75,7 @@
     </div>
     <script defer src="./alpinejs.min.js"></script>
     <script>
-        function combine(numbers) {
+        function combine(numbers, minLength = 2) {
             const output = []
 
             function backtrack(start, curr) {
@@ -89,20 +88,20 @@
             }
 
             backtrack(0, [])
-            return output.filter(o => o.length >= 2)
+            return output
+                .filter(o => o.length >= minLength)
         }
-
 
         function divide(numbers) {
             const output = []
             const set = new Set()
             function backtrack(start, subset1, subset2) {
                 if (start === numbers.length) {
-                    set.add(subset1 + '/' + subset2)
                     if (set.has(subset2 + '/' + subset1)) {
                         return
                     }
                     output.push([[...subset1], [...subset2]])
+                    set.add(subset1 + '/' + subset2)
                     return
                 }
                 const num = numbers[start]

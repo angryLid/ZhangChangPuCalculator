@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="app" x-data="{
+        cards: [],
+        cardUi(point){
+            const dict = {1: 'A', 11: 'J', 12: 'Q', 13: 'K'}
+            return dict[point] || point
+        },
+        showPanel: true,
+        romanNumerals: {
+            1: 'I',
+            2: 'II',
+            3: 'III',
+            4: 'IV',
+            5: 'V',
+            6: 'VI',
+            7: 'VII',
+            8: 'VIII',
+            9: 'IX',
+            10: 'X'
+        },
+        sort(numbers){
+            numbers.sort((a,b) => a[0].length + a[1].length - b[0].length - b[1].length)
+            numbers.reverse()
+            if(numbers.length > 10){
+                numbers.length = 10
+            }
+            return numbers
+        }
+
+    }">
+        <h6>要选择的牌：</h6>
+        <div class="question">
+            <template x-for="card in cards">
+                <div class="card" x-text="cardUi(card)"></div>
+            </template>
+        </div>
+
+        <button @dblclick="cards.length = 0">清除所有卡片(双击防栓)</button>
+        <label for="show">
+            
+            <input id="show" type="checkbox" x-model="showPanel">
+            <span>展示输入面板</span>
+        </label>
+        
+        
+        <div x-transition x-show="showPanel" class="panel">
+            <template x-for="card in Array(13).fill(0).map((_, idx) => idx + 1)">
+                <div @click="cards.push(card)" class="card card-in-panel button" x-text="cardUi(card)"></div>
+            </template>
+            <div @click="cards.pop()" class="card del card-in-panel button">Del</div>
+        </div>
+        <div class="answers">
+
+            <template x-for="(answer, index) in sort(window.__core(cards))">
+                <div class="answer">
+                    <div class="ordinals" x-text="romanNumerals[index + 1]"></div>
+                    <template x-for="card in answer[0]">
+                        <div class="card blue" x-text="cardUi(card)"></div>
+                    </template>
+                    <template x-for="card in answer[1]">
+                        <div class="card red" x-text="cardUi(card)"></div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </div>
+    <script defer src="./alpinejs.min.js"></script>
+    <script>
+        function combine(numbers) {
+            const output = []
+
+            function backtrack(start, curr) {
+                output.push([...curr])
+                for (let i = start; i < numbers.length; i++) {
+                    curr.push(numbers[i])
+                    backtrack(i + 1, curr)
+                    curr.pop()
+                }
+            }
+
+            backtrack(0, [])
+            return output.filter(o => o.length >= 2)
+        }
+
+
+        function divide(numbers) {
+            const output = []
+            const set = new Set()
+            function backtrack(start, subset1, subset2) {
+                if (start === numbers.length) {
+                    set.add(subset1 + '/' + subset2)
+                    if (set.has(subset2 + '/' + subset1)) {
+                        return
+                    }
+                    output.push([[...subset1], [...subset2]])
+                    return
+                }
+                const num = numbers[start]
+                subset1.push(num)
+                backtrack(start + 1, subset1, subset2)
+                subset1.pop()
+
+                subset2.push(num)
+                backtrack(start + 1, subset1, subset2)
+                subset2.pop()
+            }
+
+            backtrack(0, [], [])
+
+            function equals(x, y) {
+                const sumx = x.reduce((a, b) => a + b, 0)
+                const sumy = y.reduce((a, b) => a + b, 0)
+                return sumx === sumy
+            }
+            return output.filter(([x, y]) => equals(x, y))
+        }
+
+
+        window.__core = numbers => combine(numbers)
+            .map(cb => divide(cb))
+            .filter(cb => cb.length > 0)
+            .flat()
+    </script>
+</body>
+
+</html>

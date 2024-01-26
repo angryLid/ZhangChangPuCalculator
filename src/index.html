@@ -10,9 +10,10 @@
 
 <body>
     <div id="app" x-data="{
-        cards: [],
+        
+        cards: Array(10).fill(0),
         cardUi(point){
-            const dict = {1: 'A', 11: 'J', 12: 'Q', 13: 'K'}
+            const dict = {0: ' ', 1: 'A', 11: 'J', 12: 'Q', 13: 'K'}
             return dict[point] || point
         },
         showPanel: true,
@@ -26,26 +27,83 @@
             7: 'VII',
             8: 'VIII',
             9: 'IX',
-            10: 'X'
+            10: 'X' 
         },
-        sort(numbers){
+        process(_numbers){
+            const numbersWithoutZero = _numbers.filter(n => n !== 0)
+            if(numbersWithoutZero.length < 4){
+                return;
+            }
+            const numbers = 
+                window.__core(numbersWithoutZero)
             numbers.sort((a,b) => a[0].length + a[1].length - b[0].length - b[1].length)
             numbers.reverse()
             if(numbers.length > 10){
                 numbers.length = 10
             }
             return numbers
+        },
+        get title() {
+            const total = this.cards.filter(n => n > 0).length
+            const plus = total - 4 > 0 ? total - 4 : 0
+            const style = 'color: #369;font-weight:700'
+            return `已输入<span style='${style}'> ${total} </span>张（严教 + <span style='${style}'>${plus}</span>）`
+        },
+        pushCard(card) {
+            for(let i = 0; i < 10; i ++){
+                if(!this.cards[i]){
+                    this.cards[i] = card 
+                    this.cards = this.cards
+                    return
+                }
+            }
+        },
+        get targetCardIndex() {
+            return this.cards.findIndex(c => c === 0)
+        },
+        removeCard(cardIndex){
+            if(typeof cardIndex === 'number'){
+                this.cards[cardIndex] = 0
+            }else {
+                for(let i = 9; i >= 0; i --){
+                    if(this.cards[i]){
+                        this.cards[i] = 0;
+                        break;
+                    }
+                }
+            }
+            this.cards = this.cards
+        },
+        clear(){
+            this.cards = Array(10).fill(0)
+        },
+        showModal(){
+            this.$refs.dialog.showModal()
+        },
+        closeModal() {
+            this.$refs.dialog.close()
         }
-
-    }">
-        <h6>要选择的牌：</h6>
+    }" >
+    <a href="#" x-on:click="showModal()">【说明】 </a>
+    <dialog x-ref="dialog" id="favDialog">
+        <h1>Changelog</h1>
+        <ol>
+            <li>增加只能输入 10 张牌的限制</li>
+            <li>允许单击删除任意位置的卡片</li>
+        </ol>
+        <button x-on:click="closeModal()">关闭</button>
+      </dialog>
+        <h6 x-html="title"></h6>
         <div class="question">
-            <template x-for="card in cards">
-                <div class="card" x-text="cardUi(card)"></div>
+            <template x-for="(card, cardIndex) in cards">
+                <div  class="card" x-bind:class="{
+                    highlight: cardIndex === targetCardIndex, 
+                    ['card' + card]: !card,
+                }" x-text="cardUi(card)" x-on:click="removeCard(cardIndex)"></div>
             </template>
         </div>
 
-        <button @dblclick="cards.length = 0">清除所有卡片(双击防栓)</button>
+        <button @dblclick="clear">清除所有卡片(双击防栓)</button>
         <label for="show">
 
             <input id="show" type="checkbox" x-model="showPanel">
@@ -54,13 +112,13 @@
 
         <div x-transition x-show="showPanel" class="panel">
             <template x-for="card in Array(13).fill(0).map((_, idx) => idx + 1)">
-                <div @click="cards.push(card)" class="card card-in-panel button" x-text="cardUi(card)"></div>
+                <div @click="pushCard(card)" class="card card-in-panel button" x-text="cardUi(card)"></div>
             </template>
-            <div @click="cards.pop()" class="card del card-in-panel button">Del</div>
+            <div @click="removeCard()" class="card del card-in-panel button">Del</div>
         </div>
         <div class="answers">
 
-            <template x-for="(answer, index) in sort(window.__core(cards))">
+            <template x-for="(answer, index) in process(cards)">
                 <div class="answer">
                     <div class="ordinals" x-text="romanNumerals[index + 1]"></div>
                     <template x-for="card in answer[0]">

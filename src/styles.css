@@ -23,6 +23,8 @@
   text-align: center;
   background-color: #f0f0f0;
   border-radius: 2px;
+  user-select: none;
+  cursor: pointer;
 }
 
 .card.del {
@@ -35,6 +37,19 @@
 
 .card.red {
   background: rgba(0, 0, 255, .1);
+}
+
+.card.highlight{
+  box-shadow: 2px 2px green , -2px -2px green, 2px -2px green, -2px 2px green;
+}
+
+.question .card {
+  position: relative;
+}
+
+.question .card:not(.highlight):not(.card0):hover {
+  background: rgb(254, 122, 122);
+  color: white;
 }
 
 .question {

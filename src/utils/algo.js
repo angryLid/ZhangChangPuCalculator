@@ -1,4 +1,10 @@
-function combine(numbers, minLength = 2) {
+/**
+ * 求数组的组合
+ * @param {number[]} numbers 
+ * @param {number} minLength 
+ * @returns {number[][]}
+ */
+export function combine(numbers, minLength = 2) {
     const output = []
 
     function backtrack(start, curr) {
@@ -14,8 +20,12 @@ function combine(numbers, minLength = 2) {
     return output
         .filter(o => o.length >= minLength)
 }
-
-function divide(numbers) {
+/**
+ * 数组分割为和相等的两部分，计算所有答案
+ * @param {number[]} numbers 
+ * @returns {Array<[number[], number[]]>}
+ */
+export function divide(numbers) {
     const output = []
     const set = new Set()
     function backtrack(start, subset1, subset2) {

@@ -3,6 +3,10 @@ html, body {
     padding: 0;
 }
 
+iframe {
+    border-style: none;
+}
+
 .link {
     text-decoration: none;
     color: black;

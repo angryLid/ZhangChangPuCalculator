@@ -49,11 +49,6 @@ export function divide(numbers) {
 
     backtrack(0, [], [])
 
-    function equals(x, y) {
-        const sumx = x.reduce((a, b) => a + b, 0)
-        const sumy = y.reduce((a, b) => a + b, 0)
-        return sumx === sumy
-    }
     return output.filter(([x, y]) => equals(x, y))
 }
 
@@ -68,4 +63,15 @@ export function algo(numbers) {
     .map(cb => divide(cb))
     .filter(cb => cb.length > 0)
     .flat()
+}
+/**
+ * 判断两个数组是否和相等
+ * @param {number[]} x 
+ * @param {number[]} y 
+ * @returns {boolean}
+ */
+export function equals(x, y) {
+    const sumx = x.reduce((a, b) => a + b, 0)
+    const sumy = y.reduce((a, b) => a + b, 0)
+    return sumx === sumy
 }

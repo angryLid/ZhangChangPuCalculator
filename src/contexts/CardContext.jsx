@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
 
 export const CardContext = createContext({})
-export const useCardState = () => useContext(CardContext)
+export const useCardContext = () => useContext(CardContext)
 
 const CardProvider = ({children}) => {
     const reducer = (state, action) => {

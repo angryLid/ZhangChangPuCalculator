@@ -37,3 +37,12 @@
   background: rgb(254, 122, 122);
   color: white;
 }
+
+.blue {
+  background: rgba(0, 0, 255, .1);
+}
+
+.red {
+  background: rgba(255, 0, 0, .1);
+  
+}

@@ -1,0 +1,12 @@
+.dialer {
+    border: 1px solid gray;
+    border-radius: 2px;
+    display: flex;
+    gap: 10px;
+    width: 240px;
+    flex-wrap: wrap;
+    padding: 6px;
+    margin-bottom: 20px;
+    margin-top: 14px;
+  
+  }

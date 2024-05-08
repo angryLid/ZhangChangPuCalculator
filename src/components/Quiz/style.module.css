@@ -1,0 +1,9 @@
+.question {
+    display: flex;
+    margin-top: 20px;
+    gap: 10px;
+    /* height: 80px; */
+    margin-bottom: 6px;
+    /* border-bottom: 1px solid gray; */
+    flex-wrap: wrap;
+  }

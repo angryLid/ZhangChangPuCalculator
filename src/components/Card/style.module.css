@@ -1,0 +1,39 @@
+.cardbase {
+    --card-width: 40px;
+    width: var(--card-width);
+    height: calc(var(--card-width) / 0.618);
+    line-height: calc(var(--card-width) / 0.618);
+    text-align: center;
+    background-color: #f0f0f0;
+    border-radius: 2px;
+    user-select: none;
+    cursor: pointer;
+  }
+
+.del {
+  
+    width: 90px;
+  
+}
+
+
+.button {
+
+  user-select: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:active {
+  background-color: #808080;
+}
+
+.active {
+  box-shadow: 2px 2px green , -2px -2px green, 2px -2px green, -2px 2px green;
+
+}
+
+.deletable:hover {
+  background: rgb(254, 122, 122);
+  color: white;
+}

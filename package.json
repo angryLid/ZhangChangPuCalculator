@@ -11,6 +11,7 @@
     "lint": "oxlint"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.7.3",
     "@tauri-apps/cli": "^1.5.8",
     "@vitejs/plugin-react": "^4.2.1",
     "oxlint": "^0.3.2",

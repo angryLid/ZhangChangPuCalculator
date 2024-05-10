@@ -1,0 +1,19 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.7.0/schema.json",
+	"files": {
+		"include": [
+			"src/**/*.js",
+			"src/**/*.jsx",
+			"src/**/*.css",
+			"*.json",
+			"*.config.js"
+		],
+		"ignore": ["node_modules", "public", "src-tauri"]
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"all": true
+		}
+	}
+}

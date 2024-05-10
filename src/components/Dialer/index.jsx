@@ -9,7 +9,10 @@ export const Dialer = () => {
 
 	const cards = Array(13)
 		.fill(0)
-		.map((_, index) => ({ view: cardUi(index + 1), point: index + 1 }));
+		.map((_, index) => ({
+			view: cardUi(index + 1),
+			point: index + 1,
+		}));
 
 	const { push, del } = useCardContext();
 	return (
